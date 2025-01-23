@@ -1,27 +1,36 @@
 <odoo>
     <template id="report_invoice_document_b" inherit_id="account.report_invoice_document">
-        <!-- Solo aplica si la factura es de tipo B -->
-        <xpath expr="//table[@class='table table-condensed']//tfoot" position="before">
-            <t t-if="o.journal_id.invoice_type_code == 'B'">
-                <tr>
-                    <td colspan="4" style="text-align: right;">Subtotal sin IVA:</td>
-                    <td class="text-right">
-                        <t t-esc="amount_untaxed"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="4" style="text-align: right;">IVA 21%:</td>
-                    <td class="text-right">
-                        <t t-esc="tax_totals_json['amount_by_group'][0][1]"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="4" style="text-align: right;">Total:</td>
-                    <td class="text-right">
-                        <t t-esc="amount_total"/>
-                    </td>
-                </tr>
-            </t>
+        <!-- Modificar la tabla de totales para facturas tipo B -->
+        <xpath expr="//div[@id='total']//table[@class='table table-sm table-borderless']" position="replace">
+            <table class="table table-sm table-borderless" style="page-break-inside: avoid;">
+                <!-- Encabezado personalizado -->
+                <thead>
+                    <tr>
+                        <th colspan="2" class="text-end">Detalle de Totales</th>
+                    </tr>
+                </thead>
+                <!-- Totales personalizados -->
+                <tbody>
+                    <tr>
+                        <td class="text-end">Subtotal sin IVA:</td>
+                        <td class="text-end">
+                            <t t-esc="o.amount_untaxed" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-end">IVA (21%):</td>
+                        <td class="text-end">
+                            <t t-esc="o.amount_tax" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                        </td>
+                    </tr>
+                    <tr class="border-top">
+                        <td class="text-end">Total con IVA:</td>
+                        <td class="text-end">
+                            <t t-esc="o.amount_total" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </xpath>
     </template>
 </odoo>
