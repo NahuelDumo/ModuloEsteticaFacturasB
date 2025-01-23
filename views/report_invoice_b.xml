@@ -1,36 +1,28 @@
 <odoo>
     <template id="report_invoice_document_b" inherit_id="account.report_invoice_document">
-        <!-- Modificar la tabla de totales para facturas tipo B -->
-        <xpath expr="//div[@id='total']//table[@class='table table-sm table-borderless']" position="replace">
-            <table class="table table-sm table-borderless" style="page-break-inside: avoid;">
-                <!-- Encabezado personalizado -->
-                <thead>
-                    <tr>
-                        <th colspan="2" class="text-end">Detalle de Totales</th>
-                    </tr>
-                </thead>
-                <!-- Totales personalizados -->
-                <tbody>
-                    <tr>
-                        <td class="text-end">Subtotal sin IVA:</td>
-                        <td class="text-end">
-                            <t t-esc="o.amount_untaxed" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="text-end">IVA (21%):</td>
-                        <td class="text-end">
-                            <t t-esc="o.amount_tax" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
-                        </td>
-                    </tr>
-                    <tr class="border-top">
-                        <td class="text-end">Total con IVA:</td>
-                        <td class="text-end">
-                            <t t-esc="o.amount_total" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+        <!-- Agregar filas adicionales a la tabla de totales, conservando la estructura original -->
+        <xpath expr="//div[@id='total']//table[@class='table table-sm table-borderless']//tbody" position="inside">
+            <!-- Fila para Subtotal sin IVA -->
+            <tr>
+                <td class="text-end">Subtotal sin IVA:</td>
+                <td class="text-end">
+                    <t t-esc="o.amount_untaxed" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                </td>
+            </tr>
+            <!-- Fila para IVA -->
+            <tr>
+                <td class="text-end">IVA (21%):</td>
+                <td class="text-end">
+                    <t t-esc="o.amount_tax" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                </td>
+            </tr>
+            <!-- Fila para Total con IVA -->
+            <tr class="border-top">
+                <td class="text-end">Total con IVA:</td>
+                <td class="text-end">
+                    <t t-esc="o.amount_total" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                </td>
+            </tr>
         </xpath>
     </template>
 </odoo>
